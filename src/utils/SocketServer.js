@@ -33,20 +33,21 @@ module.exports = class SocketServer extends EventEmitter {
                                     log('SUBSCRIBE: ' + json.message)
                                     pubsub.subscribe(ws, json.channel)
                                     break
-                                }
+                            }
                         } catch (error) {
                             log(error)
                         }
                     })
                     ws.on('close', () => {
                         log('Stopping client connection, ' + ws.id)
-                        pubsub.unsubscribe(ws)  
+                        pubsub.unsubscribe(ws)
+                        ws.terminate()
                     })
                     ws.on('error', (error) => {
                         log('SocketServer error')
                         log(error)
                     })
-                })
+                })                
             }
         })
     }

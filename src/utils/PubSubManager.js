@@ -12,7 +12,7 @@ module.exports = class PubSubManager extends EventEmitter {
 
         Object.assign(this, {
             addChannel(channel) {
-                console.log('add channel', channel)
+                log(`Created channel ${channel}`)
                 channels[channel] = {
                     message: [],
                     subscribers: []
@@ -24,17 +24,18 @@ module.exports = class PubSubManager extends EventEmitter {
                     for (let i = 0; i < value.subscribers.length; i++) {
                         const element = value.subscribers[i]
                         if (element.id == subscriber.id) {
+                            log(`Client ${element.id} removed`)
                             value.subscribers.splice(i, 1)
                         }
                         if (value.subscribers.length == 0) {
                             delete channels[key]
+                            log(`Channel ${key} removed`)
                         }
                     }
                 }
             },
             subscribe(subscriber, channel) {
                 if (!(channel in channels)) {
-                    log('new channel created')
                     this.addChannel(channel)
                 }
                 channels[channel].subscribers.push(subscriber)
