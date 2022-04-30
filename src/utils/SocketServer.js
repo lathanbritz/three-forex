@@ -32,10 +32,10 @@ module.exports = class SocketServer extends EventEmitter {
                                 case 'SUBSCRIBE':
                                     log('SUBSCRIBE: ' + json.message)
                                     pubsub.subscribe(ws, json.channel)
-                                    if (json.channel in rate) {
+                                    if (this.rate != null && json.channel in this.rate) {
                                         pubsub.publish(ws, json.channel, {
-                                            rate: rate[json.channel].rate,
-                                            time: rate[json.channel].time 
+                                            rate: this.rate[json.channel].rate,
+                                            time: this.rate[json.channel].time 
                                         })
                                     }
                                     break
