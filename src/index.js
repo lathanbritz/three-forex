@@ -39,6 +39,7 @@ class Main extends EventEmitter {
                             time: element.time 
                         })
                     }
+                    httpSocket.setRate(data)
                 })
             },
             stop() {

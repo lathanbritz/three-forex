@@ -8,7 +8,7 @@ const log = debug('oracle:socketserver')
 module.exports = class SocketServer extends EventEmitter {
     constructor() {
         super()
-
+        this.rate = null
         Object.assign(this, {
             start(server, pubsub) {
                 log('Starting socketserver')
@@ -32,6 +32,12 @@ module.exports = class SocketServer extends EventEmitter {
                                 case 'SUBSCRIBE':
                                     log('SUBSCRIBE: ' + json.message)
                                     pubsub.subscribe(ws, json.channel)
+                                    if (json.channel in rate) {
+                                        pubsub.publish(ws, json.channel, {
+                                            rate: rate[json.channel].rate,
+                                            time: rate[json.channel].time 
+                                        })
+                                    }
                                     break
                             }
                         } catch (error) {
@@ -48,6 +54,9 @@ module.exports = class SocketServer extends EventEmitter {
                         log(error)
                     })
                 })                
+            },
+            setRate(rate) {
+                this.rate = rate
             }
         })
     }
