@@ -12,7 +12,7 @@ module.exports = class TransferWise extends EventEmitter {
     constructor($store) {
         super()
         const parameters = {
-            interval: 4000,
+            interval: 1000,
             source: null,
             target: null
         }
