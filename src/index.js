@@ -21,7 +21,7 @@ class Main extends EventEmitter {
         const transferWise = new TransferWise()
 
         const parameters = {
-            interval: 1000,
+            interval: 4000,
             port: process.env.PORT
         }
 
