@@ -11,20 +11,15 @@ dotenv.config()
 module.exports = class TransferWise extends EventEmitter {
     constructor($store) {
         super()
-        const parameters = {
-            interval: 1000,
-            source: null,
-            target: null
-        }
 
-        log('TransferWise constructor', parameters)
+        log('TransferWise constructor')
 
         Object.assign(this, {
             async run() {
                 const self = this
                 this.addListener('fx-fetch', async function() {
                     try {
-                        const uri = (parameters.source == null || parameters.target== null) ? `https://api.transferwise.com/v1/rates` : `https://api.transferwise.com/v1/rates?source=${parameters.source}&target=${parameters.target}`
+                        const uri = 'https://api.transferwise.com/v1/rates' //(parameters.source == null || parameters.target== null) ? `https://api.transferwise.com/v1/rates` : `https://api.transferwise.com/v1/rates?source=${parameters.source}&target=${parameters.target}`
                         const {data} = await axios.get(uri, {
                         headers: {
                             Authorization: 'Bearer ' + process.env.TRANSFERWISE_APPSECRET
@@ -38,10 +33,6 @@ module.exports = class TransferWise extends EventEmitter {
                         // return false
                     }
                 })
-            },
-            setSourceTarget(source, target) {
-                parameters.source = source
-                parameters.target = target
             },
             stop() {
                 log('stoping fetching fxrate')
